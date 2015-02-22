@@ -741,8 +741,8 @@ class Convertor:
                 while timeout <= op.timeout:
                     ### Is it already/still running ?
                     retcode = ooproc.poll()
-                    if retcode != None:
-                        info(3, "Process %s (pid=%s) exited with %s." % (office.binary, ooproc.pid, retcode))
+                    if retcode:
+                        info(0, "Process %s (pid=%s) exited with %s." % (office.binary, ooproc.pid, retcode))
                         break
                     try:
                         unocontext = resolver.resolve("uno:%s" % op.connection)
