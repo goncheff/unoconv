@@ -916,13 +916,14 @@ class Convertor:
                 outputprops += ( PropertyValue( "FilterData", 0, uno.Any("[]com.sun.star.beans.PropertyValue", tuple( op.exportfilter ), ), 0 ), )
 
             if not op.stdout:
-                (outputfn, ext) = os.path.splitext(inputfn)
-                if not op.output:
-                    outputfn = outputfn + os.extsep + outputfmt.extension
-                elif len(op.filenames) > 1:
-                    outputfn = op.output + os.extsep + outputfmt.extension
-                else:
-                    outputfn = realpath(op.output, os.path.basename(outputfn) + os.extsep + outputfmt.extension)
+                (outputfn, _) = os.path.splitext(inputfn)
+                outputfn = os.path.basename(outputfn + os.extsep + outputfmt.extension)
+
+                if op.output:
+                    if os.path.isdir(op.output):
+                        outputfn = realpath(op.output, os.path.basename(outputfn))
+                    else:
+                        outputfn = realpath(op.output)
 
                 outputurl = unohelper.absolutize( self.cwd, unohelper.systemPathToFileUrl(outputfn) )
                 info(1, "Output file: %s" % outputfn)
